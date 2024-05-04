@@ -1,0 +1,7 @@
+package com.purplecloud.www.mapper;
+
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.purplecloud.www.bean.RoleIdToPermissionId;
+
+public interface RoleIdToPermissionIdServiceMapper extends BaseMapper<RoleIdToPermissionId> {
+}
