@@ -7,6 +7,7 @@ import com.purplecloud.www.bean.UserIdToRoleId;
 import com.purplecloud.www.mapper.UserMapper;
 import com.purplecloud.www.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,10 +18,12 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service
+@Lazy
 public class UserServiceImpl implements UserService , UserDetailsService {
     @Autowired
     UserMapper userMapper;
     @Autowired
+    @Lazy
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserIdToRoleIdServiceImpl userIdToRoleIdService;
