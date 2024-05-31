@@ -10,11 +10,13 @@ public class Message {
     private String pictureUrl;
     private String videoUrl;
     private LocalDateTime sendTime;
+    private UserIfor user;
+
 
     public Message() {
     }
 
-    public Message(int userId, int targetId, MessageType type, String message, String pictureUrl, String videoUrl, LocalDateTime sendTime) {
+    public Message(int userId, int targetId, MessageType type, String message, String pictureUrl, String videoUrl, LocalDateTime sendTime, UserIfor user) {
         this.userId = userId;
         this.targetId = targetId;
         this.type = type;
@@ -22,6 +24,7 @@ public class Message {
         this.pictureUrl = pictureUrl;
         this.videoUrl = videoUrl;
         this.sendTime = sendTime;
+        this.user = user;
     }
 
     /**
@@ -136,7 +139,23 @@ public class Message {
         this.sendTime = sendTime;
     }
 
+    /**
+     * 获取
+     * @return user
+     */
+    public UserIfor getUser() {
+        return user;
+    }
+
+    /**
+     * 设置
+     * @param user
+     */
+    public void setUser(UserIfor user) {
+        this.user = user;
+    }
+
     public String toString() {
-        return "Message{userId = " + userId + ", targetId = " + targetId + ", type = " + type + ", message = " + message + ", pictureUrl = " + pictureUrl + ", videoUrl = " + videoUrl + ", sendTime = " + sendTime + "}";
+        return "Message{userId = " + userId + ", targetId = " + targetId + ", type = " + type + ", message = " + message + ", pictureUrl = " + pictureUrl + ", videoUrl = " + videoUrl + ", sendTime = " + sendTime + ", user = " + user + "}";
     }
 }

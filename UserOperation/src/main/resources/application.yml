@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: user-operation
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/my_blogger_user_operation
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:10086/eureka/
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+server:
+  port: 10091

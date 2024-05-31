@@ -4,6 +4,7 @@ import com.purplecloud.gateway.bean.ResultData;
 import com.purplecloud.gateway.bean.ReturnCode;
 import com.purplecloud.gateway.bean.SecurityAccessConstant;
 import com.purplecloud.gateway.util.JWTUtil;
+import com.purplecloud.gateway.util.LoginUserInfoHelper;
 import com.purplecloud.gateway.util.ResponseUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
