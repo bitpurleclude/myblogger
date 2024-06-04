@@ -1,4 +1,4 @@
-package com.purplecloud.gateway.util;
+package com.purplecloud.www.util;
 
 public class StringUtil {
     public static boolean isBlank(String str) {

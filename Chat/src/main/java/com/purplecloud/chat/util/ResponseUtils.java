@@ -1,14 +1,9 @@
-package com.purplecloud.gateway.util;
+package com.purplecloud.chat.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.purplecloud.gateway.bean.ResultData;
+import com.purplecloud.chat.bean.ResultData;
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.core.io.buffer.DefaultDataBufferFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.server.ServerWebExchange;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.util.Arrays;

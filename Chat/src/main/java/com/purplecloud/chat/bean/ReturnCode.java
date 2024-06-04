@@ -1,4 +1,4 @@
-package com.purplecloud.gateway.bean;
+package com.purplecloud.chat.bean;
 
 public enum ReturnCode {
     /**操作成功**/

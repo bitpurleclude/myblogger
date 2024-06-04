@@ -42,10 +42,35 @@ export default {
     }
   },
   methods: {
-    sendMessage() {
-      // 发送消息的逻辑，例如调用API发送消息
-      console.log(this.inputText);
-      this.inputText = '';
+    async sendMessage() {
+      let jwt = localStorage.getItem('jwt');
+      try {
+        const response = await fetch('http://localhost:10088/message/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + jwt
+          },
+          body: JSON.stringify({
+            userId: 1,
+            targetId: 2,
+            message: "asdhklj",
+            type: "PRIVATE",
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        localStorage.setItem('jwt', data.token);
+        console.log(data.token)
+        this.error = null;
+        this.isLoggedIn = true; // 登录成功后设置为true
+      } catch (error) {
+        this.error = 'Login failed';
+      }
     },
     pollMessages() {
       // 轮询消息的逻辑，例如调用API获取新消息

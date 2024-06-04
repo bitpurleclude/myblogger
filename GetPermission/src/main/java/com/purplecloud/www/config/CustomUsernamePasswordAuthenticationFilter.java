@@ -67,7 +67,7 @@ public class CustomUsernamePasswordAuthenticationFilter extends AbstractAuthenti
         return jsonData.getString(this.usernameParameter);
     }
     public JSONObject getJsonData(HttpServletRequest request) {
-        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletRequest req = request;
         StringBuilder sb = new StringBuilder();
         try (BufferedReader reader = req.getReader()) {
             String line;

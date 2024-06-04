@@ -1,4 +1,4 @@
-package com.purplecloud.gateway.util;
+package com.purplecloud.chat.util;
 
 public class LoginUserInfoHelper {
     private static final ThreadLocal<Long> userId = new ThreadLocal<>();

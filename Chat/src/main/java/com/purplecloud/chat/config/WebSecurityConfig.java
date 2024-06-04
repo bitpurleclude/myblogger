@@ -1,6 +1,6 @@
-package com.purplecloud.gateway.config;
+package com.purplecloud.chat.config;
 
-import com.purplecloud.gateway.filtier.TokenAuthenticationFilter;
+import com.purplecloud.chat.filtier.TokenAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity //@EnableWebSecurity是开启SpringSecurity的默认行为
@@ -43,7 +44,7 @@ public class WebSecurityConfig {
                 // 前后端分离是无状态的，不需要session了，直接禁用。
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                         // 允许所有OPTIONS请求
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS,"**").permitAll()
                         // 允许 SpringMVC 的默认错误地址匿名访问
                         .requestMatchers("/error").permitAll()
                         // 允许任意请求被已登录用户访问，不检查Authority

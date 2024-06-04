@@ -54,9 +54,9 @@
             <artifactId>spring-modulith-starter-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.purplecloud</groupId>
-            <artifactId>GateWay</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>com.GateWay2</groupId>
+            <artifactId>GateWay2</artifactId>
+            <version>1.4-SNAPSHOT</version>
         </dependency>
 
         <dependency>
@@ -92,6 +92,11 @@
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
     <dependencyManagement>

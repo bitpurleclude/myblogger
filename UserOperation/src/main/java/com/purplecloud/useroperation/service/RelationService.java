@@ -1,8 +1,6 @@
 package com.purplecloud.useroperation.service;
 
 import com.purplecloud.useroperation.bean.Relation;
-import com.purplecloud.useroperation.mapper.RelationMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 

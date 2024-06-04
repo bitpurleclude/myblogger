@@ -8,7 +8,7 @@
 <script>
 import ChatList from './ChatList.vue'
 import ChatComponent from './ChatComponent.vue'
-import { openDB } from 'idb';
+import {openDB} from 'idb';
 
 let chats=null;
 

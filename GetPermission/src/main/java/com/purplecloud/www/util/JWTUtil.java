@@ -1,15 +1,31 @@
-package com.purplecloud.gateway.util;
+package com.purplecloud.www.util;
 
-import com.purplecloud.gateway.bean.SecurityAccessConstant;
+import com.google.gson.Gson;
+import com.purplecloud.www.bean.SecurityAccessConstant;
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.gson.io.GsonSerializer;
+import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.GrantedAuthority;
+
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class JWTUtil {
     private static final long tokenExpiration = 20 * 60 * 1000; // 20min过期
     private static final long tokenRefreshExpiration = 12 * 60 * 60 * 1000; // 12小时过期
-    private static final String tokenSignKey = "Ljr2287699363"; //密钥
+    private static final String tokenSignKey = generateKey(); //密钥
 
+    private static String generateKey() {
+        String password = "Ljr2287699363@Ljr2287699363@Ljr2287699363@Ljr2287699363@Ljr2287699363@Ljr2287699363@";
+        byte[] passwordBytes = password.getBytes(StandardCharsets.UTF_8);
+        return Base64.getEncoder().encodeToString(passwordBytes);
+    }
     private static String buildToken(Long userId, String email, List<String> permission , long timeToLive){
         return Jwts.builder()
                 .setSubject("AUTH-USER")
@@ -19,7 +35,30 @@ public class JWTUtil {
                 .claim("permission", permission)
                 .signWith(SignatureAlgorithm.HS512, tokenSignKey)
                 .compressWith(CompressionCodecs.GZIP)
+                .serializeToJsonWith(new GsonSerializer<>(new Gson()))
                 .compact();
+    }
+    private static String buildToken(Long userId, String email, Collection<? extends GrantedAuthority> authorities, long timeToLive){
+        List<String> permissions = authorities.stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.toList());
+
+        return Jwts.builder()
+                .setSubject("AUTH-USER")
+                .setExpiration(new Date(System.currentTimeMillis() + timeToLive))
+                .claim("userId", userId)
+                .claim("email", email)
+                .claim("permission", permissions)
+                .signWith(SignatureAlgorithm.HS512, tokenSignKey)
+                .compressWith(CompressionCodecs.GZIP)
+                .compact();
+    }
+    public static String[] createToken(Long userId, String email, Collection<? extends GrantedAuthority> authorities) {
+        String token = buildToken(userId,email,authorities,tokenExpiration);
+        //token过期时可以刷新长期token
+        String refreshToken = buildToken(userId,email,authorities,tokenRefreshExpiration);
+
+        return new String[]{token , refreshToken};
     }
     public static String[] createToken(Long userId, String email, List<String> permission) {
         String token = buildToken(userId,email,permission,tokenExpiration);
@@ -55,14 +94,15 @@ public class JWTUtil {
             return null;
         }
 
-        Claims claims = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token).getBody();
+        Jws<Claims> claimsJws = getClaims(token);
+        Claims claims = claimsJws.getBody();
         return claims.getExpiration();
     }
 
     //判断当前token是否过期
     public static boolean isOutDate(String token){
         try {
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token);
+            Jws<Claims> claimsJws = getClaims(token);
             Date expirationDate = claimsJws.getBody().getExpiration();
             return expirationDate.before(new Date());
         } catch (JwtException e) {
@@ -77,7 +117,7 @@ public class JWTUtil {
                 return null;
             }
 
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token);
+            Jws<Claims> claimsJws = getClaims(token);
             Claims claims = claimsJws.getBody();
             Integer userId = (Integer) claims.get("userId");
             return userId.longValue();
@@ -93,7 +133,7 @@ public class JWTUtil {
                 return "";
             }
 
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token);
+            Jws<Claims> claimsJws = getClaims(token);
             Claims claims = claimsJws.getBody();
             return (String) claims.get("email");
         } catch (Exception e) {
@@ -108,13 +148,20 @@ public class JWTUtil {
                 return null;
             }
 
-            Jws<Claims> claimsJws = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token);
+            Jws<Claims> claimsJws = getClaims(token);
             Claims claims = claimsJws.getBody();
             return (List<String>) claims.get("permission");
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
+    }
+    public static  Jws<Claims> getClaims(String token){
+        byte[] decodedKey = Base64.getDecoder().decode(tokenSignKey);
+        SecretKey originalKey = new SecretKeySpec(decodedKey, 0, decodedKey.length, "HmacSHA512");
+
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(originalKey).parseClaimsJws(token);
+        return claimsJws;
     }
 }
 

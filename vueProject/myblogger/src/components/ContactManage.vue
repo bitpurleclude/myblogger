@@ -1,9 +1,5 @@
 <template>
   <div class="contact-manage">
-    <div class="search">
-      <input type="text" v-model="searchText" placeholder="Search...">
-      <button @click="search">Search</button>
-    </div>
     <FriendGroupList v-if="groups || friends"
                      :friends="friends"
                      :groups="groups"

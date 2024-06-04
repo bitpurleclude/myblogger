@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div class="app-container">
+      <TopBar />
       <Sidebar />
       <router-view/>
 <!--      <RelationWrapper />-->
@@ -16,8 +17,6 @@
 </template>
 
 <script>
-import ChatList from './components/ChatList.vue'
-import ChatComponent from './components/ChatComponent.vue'
 import Sidebar from './components/Sidebar.vue'
 import ChatWrapper from "@/components/ChatWrapper.vue";
 import FriendGroupList from "@/components/FriendGroupList.vue";
@@ -25,6 +24,7 @@ import SearchAndAdd from "@/components/SearchAndAdd.vue";
 import RelationShip from "@/components/RelationShip.vue";
 import ContactManage from "@/components/ContactManage.vue";
 import RelationWrapper from "@/components/RelationWrapper.vue";
+import TopBar from "@/components/TopBar.vue";
 
 export default {
   name: 'App',
@@ -36,6 +36,7 @@ export default {
     FriendGroupList,
     SearchAndAdd,
     RelationShip,
+    TopBar,
     // ChatList,
     // ChatComponent
   }
@@ -54,7 +55,9 @@ export default {
   justify-content: center;
   align-items: center;
 }
-
+body {
+  padding-top: 50px; /* 这个值应该等于你的top-bar的高度 */
+}
 .app-container {
   display: flex;
   width: 100%;

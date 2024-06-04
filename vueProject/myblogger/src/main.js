@@ -1,5 +1,5 @@
-import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
+import {createApp} from 'vue'
+import {createRouter, createWebHistory} from 'vue-router'
 import RelationWrapper from './components/RelationWrapper.vue'
 import ChatWrapper from './components/ChatWrapper.vue'
 import App from "@/App.vue";

@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @MapperScan("com.purplecloud.www.mapper")
-public class UserApplication {
+public class UserPermissionApplication {
 
         public static void main(String[] args) {
-            SpringApplication.run(UserApplication.class, args);
+            SpringApplication.run(UserPermissionApplication.class, args);
         }
 }

@@ -1,25 +1,19 @@
 package com.purplecloud.www.config;
 
+import com.purplecloud.www.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
-import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -31,7 +25,7 @@ public class SpringSecurityConfig {
         return new BCryptPasswordEncoder();
     }
     @Autowired
-    private UserDetailsService userDetailsService;
+    private UserServiceImpl userDetailsService;
 
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
@@ -43,28 +37,14 @@ public class SpringSecurityConfig {
     }
 
     @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOriginPatterns(Arrays.asList("*")); // 使用allowedOriginPatterns替代allowedOrigins
-        configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE", "OPTIONS")); // 允许所有HTTP方法
-        configuration.setAllowCredentials(true); // 允许发送cookies
-        configuration.setAllowedHeaders(Arrays.asList("*")); // 允许所有头部信息
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration); // 对所有URL应用这个CORS配置
-        return source;
-    }
-    @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 使用新的方法替换http.cors()
+//                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // 使用新的方法替换http.cors()
                 .addFilterBefore(loginFilter(authenticationManager(http.getSharedObject(AuthenticationConfiguration.class))), UsernamePasswordAuthenticationFilter.class)
                 .csrf((csrf) -> csrf.disable())
                 .formLogin(formLogin -> formLogin
-                        .loginProcessingUrl("/my_blogger/user/login").permitAll()
+                        .loginProcessingUrl("/userPermission/login1").permitAll()
                         .successHandler(new CustomAuthenticationSuccessHandler())
-                        .loginPage("/user/authentication/html/Login.html")
-                        .permitAll()
                 )
                 .authorizeHttpRequests(authorize -> authorize
                         //.requestMatchers("/*").permitAll()
@@ -79,7 +59,7 @@ public class SpringSecurityConfig {
     }
     CustomUsernamePasswordAuthenticationFilter loginFilter(AuthenticationManager authenticationManager) throws Exception {
         CustomUsernamePasswordAuthenticationFilter loginFilter = new CustomUsernamePasswordAuthenticationFilter(authenticationManager);
-        loginFilter.setFilterProcessesUrl("/user/authentication/login");
+        loginFilter.setFilterProcessesUrl("/userPermission/login1");
         loginFilter.setUsernameParameter("email");
         loginFilter.setPasswordParameter("password");
 //        loginFilter.setAuthenticationManager();

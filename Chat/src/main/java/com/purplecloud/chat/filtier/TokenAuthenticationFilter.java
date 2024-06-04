@@ -1,11 +1,13 @@
-package com.purplecloud.gateway.filtier;
+package com.purplecloud.chat.filtier;
 
-import com.purplecloud.gateway.bean.ResultData;
-import com.purplecloud.gateway.bean.ReturnCode;
-import com.purplecloud.gateway.bean.SecurityAccessConstant;
-import com.purplecloud.gateway.util.JWTUtil;
-import com.purplecloud.gateway.util.LoginUserInfoHelper;
-import com.purplecloud.gateway.util.ResponseUtils;
+
+
+import com.purplecloud.chat.bean.ResultData;
+import com.purplecloud.chat.bean.ReturnCode;
+import com.purplecloud.chat.bean.SecurityAccessConstant;
+import com.purplecloud.chat.util.JWTUtil;
+import com.purplecloud.chat.util.LoginUserInfoHelper;
+import com.purplecloud.chat.util.ResponseUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,11 +32,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         logger.info("uri:"+request.getRequestURI());
+        System.out.println("uri:"+request.getRequestURI());
         //获取包含权限的authentication
         UsernamePasswordAuthenticationToken authentication = getAuthentication(request);
+
         if(null != authentication) {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(request, response);
@@ -44,10 +47,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         }
     }
 
+
     private UsernamePasswordAuthenticationToken getAuthentication(HttpServletRequest request) {
         //请求头是否有token
         String token = JWTUtil.getToken(request.getHeader(SecurityAccessConstant.HEADER_NAME_TOKEN));
-
+        System.out.println("token:"+token);
         if(null != token) {
             String email = JWTUtil.getEmail(token);
             Long userId = JWTUtil.getUserId(token);

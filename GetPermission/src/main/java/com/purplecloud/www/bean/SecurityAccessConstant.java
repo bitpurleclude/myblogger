@@ -1,4 +1,4 @@
-package com.purplecloud.gateway.bean;
+package com.purplecloud.www.bean;
 
 public class SecurityAccessConstant {
     public static String TOKEN_PREFIX = "Bearer ";

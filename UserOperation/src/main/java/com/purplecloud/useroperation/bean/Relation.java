@@ -1,7 +1,6 @@
 package com.purplecloud.useroperation.bean;
 
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 
 public class Relation {

@@ -1,15 +1,39 @@
 server:
   port: 10088
+#  ssl:
+#    enabled: true
+#    key-store: classpath:keystore.p12
+#    key-store-password: password
+#    key-store-type: PKCS12
+#    key-alias: alias
+#  http2:
+#    enabled: true
+
 spring:
   application:
     name: gateway-server
   cloud:
     gateway:
+      globalcors:
+        cors-configurations:
+          # 仅在开发环境设置为*
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
       routes:
-        - id: user
-          uri: lb://user
+        - id: userInfo
+          uri: lb://user-inform-server
           predicates:
             - Path=/user/**
+        - id: userPermission
+          uri: lb://user-permission-server
+          predicates:
+            - Path=/userPermission/**
+        - id: userMessage
+          uri: lb://chat-server
+          predicates:
+            - Path=/message/**
 
 eureka:
   client:

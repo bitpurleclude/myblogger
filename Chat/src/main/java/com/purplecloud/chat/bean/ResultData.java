@@ -1,9 +1,7 @@
-package com.purplecloud.gateway.bean;
+package com.purplecloud.chat.bean;
+
 
 import lombok.Data;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Data
 public class ResultData<t> {

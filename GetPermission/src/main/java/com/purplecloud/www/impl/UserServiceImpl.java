@@ -29,6 +29,24 @@ public class UserServiceImpl implements UserService , UserDetailsService {
     private UserIdToRoleIdServiceImpl userIdToRoleIdService;
     @Autowired
     private HashMap<Integer, Role> roleIdHashMap;
+    
+    @Override
+    public User login(String username, String password) {
+        User user = getUserByUsername(username);
+        if (user!=null&&passwordEncoder.matches(password,user.getPassword())){
+            return user;
+        }
+        return null;
+    }
+    public User initUser(User user){
+        List<UserIdToRoleId> userIdToRoleIdByUserId = userIdToRoleIdService.getUserIdToRoleIdByUserId(user.getId());
+        user.getRolesHashMap().clear();
+        for (UserIdToRoleId userIdToRoleId : userIdToRoleIdByUserId) {
+            Role role = roleIdHashMap.get(userIdToRoleId.getRoleId());
+            user.getRolesHashMap().put(role.getRoleName(),role);
+        }
+        return getUserRoleByUser(user);
+    }
     @Override
     public User getUserByUsername(String username) {
         QueryWrapper<User> query = new QueryWrapper(User.class);
@@ -60,6 +78,7 @@ public class UserServiceImpl implements UserService , UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        System.out.println(username);
         User user=getUserByUsername(username);
         if (user==null){
             try {
