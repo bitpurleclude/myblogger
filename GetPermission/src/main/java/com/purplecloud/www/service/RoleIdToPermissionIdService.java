@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface RoleIdToPermissionIdService {
     List<RoleIdToPermissionId> getRoleIdToPermissionIdByRoleId(int roleId);
+
+    void insertRoleIdToPermissionId(int roleId, int permissionId);
 }

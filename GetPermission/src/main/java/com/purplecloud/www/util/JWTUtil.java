@@ -113,13 +113,13 @@ public class JWTUtil {
 
     public static Long getUserId(String token) {
         try {
-            if (token == null || token == "") {
+            if (token == null || "".equals(token)) {
                 return null;
             }
 
             Jws<Claims> claimsJws = getClaims(token);
             Claims claims = claimsJws.getBody();
-            Integer userId = (Integer) claims.get("userId");
+            Double userId = (Double) claims.get("userId");
             return userId.longValue();
         } catch (Exception e) {
             e.printStackTrace();

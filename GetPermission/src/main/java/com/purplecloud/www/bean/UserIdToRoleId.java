@@ -13,7 +13,10 @@ public class UserIdToRoleId {
 
     public UserIdToRoleId() {
     }
-
+    public UserIdToRoleId(int userId, int roleId) {
+        this.userId = userId;
+        this.roleId = roleId;
+    }
     public UserIdToRoleId(int id, int userId, int roleId) {
         this.id = id;
         this.userId = userId;

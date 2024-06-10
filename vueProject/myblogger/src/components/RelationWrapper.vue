@@ -1,7 +1,7 @@
 <template>
   <div class="relation-wrapper">
     <SearchAndAdd />
-    <RelationShip />
+    <RelationShip  />
     <ContactManage />
   </div>
 </template>

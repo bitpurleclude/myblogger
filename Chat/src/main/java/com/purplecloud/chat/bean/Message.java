@@ -1,10 +1,12 @@
 package com.purplecloud.chat.bean;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class Message {
     private int userId;
     private int targetId;
+    private UUID messageId;
     private MessageType type;
     private String message;
     private String pictureUrl;
@@ -16,9 +18,10 @@ public class Message {
     public Message() {
     }
 
-    public Message(int userId, int targetId, MessageType type, String message, String pictureUrl, String videoUrl, LocalDateTime sendTime, UserIfor user) {
+    public Message(int userId, int targetId, UUID messageId, MessageType type, String message, String pictureUrl, String videoUrl, LocalDateTime sendTime, UserIfor user) {
         this.userId = userId;
         this.targetId = targetId;
+        this.messageId = messageId;
         this.type = type;
         this.message = message;
         this.pictureUrl = pictureUrl;
@@ -57,6 +60,22 @@ public class Message {
      */
     public void setTargetId(int targetId) {
         this.targetId = targetId;
+    }
+
+    /**
+     * 获取
+     * @return messageId
+     */
+    public UUID getMessageId() {
+        return messageId;
+    }
+
+    /**
+     * 设置
+     * @param messageId
+     */
+    public void setMessageId(UUID messageId) {
+        this.messageId = messageId;
     }
 
     /**
@@ -156,6 +175,6 @@ public class Message {
     }
 
     public String toString() {
-        return "Message{userId = " + userId + ", targetId = " + targetId + ", type = " + type + ", message = " + message + ", pictureUrl = " + pictureUrl + ", videoUrl = " + videoUrl + ", sendTime = " + sendTime + ", user = " + user + "}";
+        return "Message{userId = " + userId + ", targetId = " + targetId + ", messageId = " + messageId + ", type = " + type + ", message = " + message + ", pictureUrl = " + pictureUrl + ", videoUrl = " + videoUrl + ", sendTime = " + sendTime + ", user = " + user + "}";
     }
 }

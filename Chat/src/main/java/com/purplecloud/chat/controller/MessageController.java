@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/message")
@@ -15,8 +16,11 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
     @RequestMapping("/send")
-    public void sendMessage(@RequestBody Message message) {
+    public UUID sendMessage(@RequestBody Message message) {
+        UUID messageId = UUID.randomUUID();
+        message.setMessageId(messageId);
         messageService.saveMessage(message);
+        return messageId;
     }
     @RequestMapping("/receive")
     public List<Message> receiveMessage(@RequestBody Message message) {

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.purplecloud.www.bean.Role;
 import com.purplecloud.www.bean.User;
 import com.purplecloud.www.bean.UserIdToRoleId;
+import com.purplecloud.www.feign.UserInformFeign;
 import com.purplecloud.www.mapper.UserMapper;
 import com.purplecloud.www.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import java.util.List;
 @Lazy
 public class UserServiceImpl implements UserService , UserDetailsService {
     @Autowired
+    UserInformFeign userInformFeign;
+    @Autowired
     UserMapper userMapper;
     @Autowired
     @Lazy
@@ -29,6 +32,16 @@ public class UserServiceImpl implements UserService , UserDetailsService {
     private UserIdToRoleIdServiceImpl userIdToRoleIdService;
     @Autowired
     private HashMap<Integer, Role> roleIdHashMap;
+    @Override
+    public User register(User user) {
+        if (getUserByUsername(user.getEmail())!=null){
+            return null;
+        }
+        user= insertUser(user);
+        userIdToRoleIdService.insertUserIdToRoleId(user.getId(),1);
+        userInformFeign.insertUserInform(user.getId(),user.getEmail());
+        return user;
+    }
     
     @Override
     public User login(String username, String password) {
@@ -71,9 +84,10 @@ public class UserServiceImpl implements UserService , UserDetailsService {
          return getUserByUsername(email)!=null;
     }
     @Override
-    public void insertUser(User user) {
+    public User insertUser(User user) {
        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userMapper.insert(user);
+       userMapper.insert(user);
+       return user;
     }
 
     @Override

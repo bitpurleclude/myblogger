@@ -13,6 +13,8 @@ public class RoleIdToPermissionIdServiceImpl implements RoleIdToPermissionIdServ
     @Autowired
     RoleIdToPermissionIdServiceMapper roleIdToPermissionIdServiceMapper;
     @Override
+    public void insertRoleIdToPermissionId(int roleId, int permissionId){}
+    @Override
     public List<RoleIdToPermissionId> getRoleIdToPermissionIdByRoleId(int roleId) {
         return roleIdToPermissionIdServiceMapper.selectList(new QueryWrapper<RoleIdToPermissionId>().eq("role_id", roleId));
     }

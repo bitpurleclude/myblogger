@@ -12,6 +12,7 @@
         <img :src="friend.avatar" alt="朋友头像">
         {{ friend.name }}
         <button @click="removeFriend(friend.id)">{{ friendsClickName }}</button>
+        <slot name="friendButton" :friend="friend"></slot>
       </li>
     </ul>
 
@@ -20,6 +21,7 @@
         <img :src="group.avatar" alt="群组头像">
         {{ group.name }}
         <button @click="leaveGroup(group.id)">{{ groupClickName }}</button>
+        <slot name="groupButton" :group="group"></slot>
       </li>
     </ul>
   </div>
@@ -53,7 +55,9 @@ export default {
   },
   computed: {
     sortedFriends() {
-      return this.friends.sort((a, b) => a.name.localeCompare(b.name));
+      return this.friends
+          .filter(friend => friend && friend.name) // 过滤掉undefined的元素和name属性为undefined的元素
+          .sort((a, b) => a.name.localeCompare(b.name)); // 现在可以安全地访问localeCompare方法
     },
     sortedGroups() {
       return this.groups.sort((a, b) => a.name.localeCompare(b.name));
@@ -73,12 +77,11 @@ export default {
   },
   methods: {
     removeFriend(id) {
-      // 取消朋友关系的逻辑
-      this.friends = this.friends.filter(friend => friend.id !== id);
+      this.$emit('click-person', id);
     },
     leaveGroup(id) {
       // 退出群聊的逻辑
-      this.groups = this.groups.filter(group => group.id !== id);
+      this.$emit('click-group', id);
     }
   }
 }

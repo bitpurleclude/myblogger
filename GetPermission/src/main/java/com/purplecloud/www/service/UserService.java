@@ -4,6 +4,8 @@ package com.purplecloud.www.service;
 import com.purplecloud.www.bean.User;
 
 public interface UserService {
+    User register(User user);
+
     User login(String username, String password);
 
     User getUserByUsername(String username);
@@ -12,5 +14,5 @@ public interface UserService {
 
     boolean checkHasResign(String email);
 
-    void insertUser(User user);
+    User insertUser(User user);
 }

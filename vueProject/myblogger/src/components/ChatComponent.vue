@@ -7,7 +7,7 @@
           :key="message.id"
           :avatar="message.avatar"
           :name="message.name"
-          :text="message.text"
+          :text="message.message"
           :isSelf="message.isSelf"
       />
     </div>
@@ -22,6 +22,10 @@
 import MessageComponent from './MessageComponent.vue'
 
 export default {
+  created() {
+    // 在组件创建后启动轮询
+    this.pollingInterval = setInterval(this.fetchNewMessages, 5000); // 每5秒轮询一次
+  },
   components: {
     MessageComponent
   },
@@ -34,16 +38,20 @@ export default {
     }
   },
   computed: {
-    chatName() {
-      return this.chat.name;
-    },
-    messages() {
-      return this.chat.messages;
-    }
   },
   methods: {
     async sendMessage() {
       let jwt = localStorage.getItem('jwt');
+      let user = localStorage.getItem('userInform')
+      let message = {
+        time: Date.now(),
+        userId: localStorage.getItem('id'),
+        avatar: localStorage.getItem(user.avatar),
+        name: localStorage.getItem(user.username),
+        targetId: this.chat.id,
+        message: this.inputText,
+        type: this.chat.type,
+      };
       try {
         const response = await fetch('http://localhost:10088/message/send', {
           method: 'POST',
@@ -51,23 +59,20 @@ export default {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + jwt
           },
-          body: JSON.stringify({
-            userId: 1,
-            targetId: 2,
-            message: "asdhklj",
-            type: "PRIVATE",
-          }),
+          body: JSON.stringify(message),
         });
 
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
-        const data = await response.json();
-        localStorage.setItem('jwt', data.token);
-        console.log(data.token)
+        let data = await response.json();
+        this.inputText = '';
         this.error = null;
-        this.isLoggedIn = true; // 登录成功后设置为true
+        message.isSelf = true;
+        message.messageId= data;
+        let messagesSend = [];
+        messagesSend.push(message);
+        this.$emit('new-message', messagesSend);
       } catch (error) {
         this.error = 'Login failed';
       }
@@ -82,13 +87,28 @@ export default {
         this.$emit('new-message', newMessage);
       }
     },
-    created() {
-      // 在组件创建后启动轮询
-      this.pollingInterval = setInterval(this.pollMessages, 5000); // 每5秒轮询一次
-    },
-    fetchNewMessages() {
-      // 这里是获取新消息的逻辑，你需要根据你的应用实际情况来实现这个方法
-      // 这个方法应该返回新的消息，如果没有新消息，则返回 null 或 undefined
+
+    async fetchNewMessages() {
+      let jwt = localStorage.getItem('jwt');
+      const response = await fetch('http://localhost:10088/message/receive', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + jwt
+        },
+        body: JSON.stringify({
+          type:this.chat.type,
+          targetId:  localStorage.getItem('id'),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      this.$emit('new-message', data);
+      console.log(data);
     },
 
     beforeDestroy() {

@@ -16,4 +16,8 @@ public class UserIdToRoleIdServiceImpl implements UserIdToRoleIdService {
     public List<UserIdToRoleId> getUserIdToRoleIdByUserId(int userId) {
         return userIdToRoleIdMapper.selectList(new QueryWrapper<UserIdToRoleId>().eq("user_id", userId));
     }
+    @Override
+    public void insertUserIdToRoleId(int userId, int roleId) {
+        userIdToRoleIdMapper.insert(new UserIdToRoleId(userId,roleId));
+    }
 }

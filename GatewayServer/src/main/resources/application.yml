@@ -25,7 +25,7 @@ spring:
         - id: userInfo
           uri: lb://user-inform-server
           predicates:
-            - Path=/user/**
+            - Path=/user-info/**
         - id: userPermission
           uri: lb://user-permission-server
           predicates:
@@ -34,6 +34,10 @@ spring:
           uri: lb://chat-server
           predicates:
             - Path=/message/**
+        - id: userOperation
+          uri: lb://user-operation
+          predicates:
+            - Path=/relation/**
 
 eureka:
   client:

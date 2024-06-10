@@ -5,8 +5,8 @@ import ChatWrapper from './components/ChatWrapper.vue'
 import App from "@/App.vue";
 
 const routes = [
-    { path: '/relation', component: RelationWrapper },
-    { path: '/chat', component: ChatWrapper }
+    { path: '/relation', component: RelationWrapper, name: 'RelationWrapper' },
+    { path: '/chat', component: ChatWrapper, name: 'ChatWrapper' }
 ]
 
 const router = createRouter({

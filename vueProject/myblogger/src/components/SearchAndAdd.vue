@@ -42,11 +42,45 @@ export default {
     }
   },
   methods: {
-    search() {
+    async search() {
       console.log('Searching for:', this.searchText);
+      try {
+        const response = await fetch(`http://localhost:10088/user-info/get-user-by-id?id=${this.searchText}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const userInfo = await response.json();
+        let friend={
+          id: userInfo.id,
+          name: userInfo.username,
+          avatar: userInfo.avatar
+        }
+        this.friends=[];
+        this.friends.push(friend);
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
     },
-    ClickPerson() {
-      console.log('Clicked Person');
+    async ClickPerson(id) {
+      try {
+        const response = await fetch(`http://localhost:10088/relation/request_Relation`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: localStorage.getItem('id'),
+            relationId: id,
+            relationType: 'PRIVATE'
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
     },
     ClickGroup() {
       console.log('Clicked Group');

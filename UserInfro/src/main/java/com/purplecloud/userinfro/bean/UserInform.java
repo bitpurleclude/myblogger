@@ -1,21 +1,22 @@
 package com.purplecloud.userinfro.bean;
 
 
-public class UserIfor {
+public class UserInform {
     private int id;
     private String username;
-    private String headPictureUrl;
+    private String avatar;
     private String email;
     private String phone;
     private String address;
 
-    public UserIfor() {
+
+    public UserInform() {
     }
 
-    public UserIfor(int id, String username, String headPictureUrl, String email, String phone, String address) {
+    public UserInform(int id, String username, String avatar, String email, String phone, String address) {
         this.id = id;
         this.username = username;
-        this.headPictureUrl = headPictureUrl;
+        this.avatar = avatar;
         this.email = email;
         this.phone = phone;
         this.address = address;
@@ -55,18 +56,18 @@ public class UserIfor {
 
     /**
      * 获取
-     * @return headPictureUrl
+     * @return avatar
      */
-    public String getHeadPictureUrl() {
-        return headPictureUrl;
+    public String getAvatar() {
+        return avatar;
     }
 
     /**
      * 设置
-     * @param headPictureUrl
+     * @param avatar
      */
-    public void setHeadPictureUrl(String headPictureUrl) {
-        this.headPictureUrl = headPictureUrl;
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     /**
@@ -118,6 +119,6 @@ public class UserIfor {
     }
 
     public String toString() {
-        return "UserIfor{id = " + id + ", username = " + username + ", headPictureUrl = " + headPictureUrl + ", email = " + email + ", phone = " + phone + ", address = " + address + "}";
+        return "UserInform{id = " + id + ", username = " + username + ", avatar = " + avatar + ", email = " + email + ", phone = " + phone + ", address = " + address + "}";
     }
 }

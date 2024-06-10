@@ -1,6 +1,11 @@
 spring:
   application:
     name: user-inform-server
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/my_blogger_user_inform
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.cj.jdbc.Driver
 eureka:
   client:
     service-url:

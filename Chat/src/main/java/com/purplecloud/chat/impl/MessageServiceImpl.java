@@ -2,6 +2,7 @@ package com.purplecloud.chat.impl;
 
 
 import com.purplecloud.chat.bean.Message;
+import com.purplecloud.chat.bean.MessageType;
 import com.purplecloud.chat.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -23,16 +24,18 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     public void saveMessage(Message message) {
-        String key = message.getType().name() + ":" + message.getTargetId();
+        String key = message.getTargetId() + ":" + message.getType().name();
         redisTemplate.opsForList().rightPush(key, message);
         redisTemplate.expire(key, 24, TimeUnit.HOURS);
     }
 
     @Override
     public List<Message> getMessages(Message message) {
-        String key = message.getType().name() + ":" + message.getTargetId();
+        String key = message.getTargetId() + ":" + message.getType().name();
         List<Message> messages = redisTemplate.opsForList().range(key, 0, -1);
-        redisTemplate.delete(key);
+        if (message.getType() == MessageType.PRIVATE){
+            redisTemplate.delete(key);
+        }
         return messages;
-}
+    }
 }
