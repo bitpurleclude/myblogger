@@ -97,14 +97,16 @@ export default {
           let friend = {
             id: relation.relationId,
             name: relation1.email,
-            avatar: relation1.avatar
+            avatar: relation1.avatar,
+            online: relation1.online
           }
           this.friends.push(friend);
         }else {
           let friend = {
             id: relation.relationId,
             name: relation1.username,
-            avatar: relation1.avatar
+            avatar: relation1.avatar,
+            online: relation1.online
           }
           this.friends.push(friend);
         }

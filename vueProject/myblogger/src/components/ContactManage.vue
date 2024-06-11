@@ -17,6 +17,9 @@ export default {
   components: {
     FriendGroupList
   },
+  created() {
+    this.pollingInterval = setInterval(this.getRequest, 5000);
+  },
   data() {
     return {
       selectedList: 'friends',
@@ -38,10 +41,55 @@ export default {
     }
   },
   methods: {
-    search() {
+    async getRequest() {
+      let id = localStorage.getItem('id');
+      try {
+        const response = await fetch(`http://localhost:10088/relation/getRequestRelation?userId=${id}`);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        this.friends = [];
+        for (const item of data) {
+          const response = await fetch(`http://localhost:10088/user-info/get-user-by-id?id=${item.userId}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const userInfo = await response.json();
+          let friend = {
+            id: userInfo.id,
+            name: userInfo.username,
+            avatar: userInfo.avatar
+          }
+          this.friends.push(friend);
+        }
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
       console.log('Searching for:', this.searchText);
     },
-    ClickPerson() {
+    async ClickPerson(targetId) {
+      let id = localStorage.getItem('id');
+      try {
+        const response = await fetch(`http://localhost:10088/relation//confirmTheRelationship`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: id,
+            relationId: targetId,
+            relationType: 'PRIVATE'
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+      } catch (error) {
+        console.error('Error fetching user info:', error);
+      }
       console.log('Clicked Person');
     },
     ClickGroup() {

@@ -57,7 +57,6 @@ export default {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
         const data = await response.json();
         localStorage.setItem('userInform', JSON.stringify(data));
       } catch (error) {
@@ -89,7 +88,9 @@ export default {
         this.error = null;
         this.isLoggedIn = true; // 登录成功后设置为true
         this.startHeartbeat(); // 登录成功后开始发送心跳
+        alert('Login successful');
       } catch (error) {
+        alert('Login failed');
         this.error = 'Login failed';
       }
     },
@@ -102,14 +103,9 @@ export default {
 
 // 发送心跳
     async sendHeartbeat() {
+      let id = localStorage.getItem('id');
       try {
-        const response = await fetch('http://localhost:10088/userPermission/heartbeat', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + localStorage.getItem('jwt'), // 从localStorage中获取jwt
-          },
-        });
+        const response = await fetch(`http://localhost:10088/user-info/hartBeat?id=${id}`);
 
         if (!response.ok) {
           throw new Error('Heartbeat failed');

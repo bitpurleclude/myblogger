@@ -1,13 +1,19 @@
 package com.purplecloud.userinfro.bean;
 
 
+import com.baomidou.mybatisplus.annotation.TableField;
+import org.springframework.data.annotation.Transient;
+
 public class UserInform {
+
     private int id;
     private String username;
     private String avatar;
     private String email;
     private String phone;
     private String address;
+    @TableField(exist = false)
+    private boolean online;
 
 
     public UserInform() {
@@ -20,6 +26,16 @@ public class UserInform {
         this.email = email;
         this.phone = phone;
         this.address = address;
+    }
+
+    public UserInform(int id, String username, String avatar, String email, String phone, String address, boolean online) {
+        this.id = id;
+        this.username = username;
+        this.avatar = avatar;
+        this.email = email;
+        this.phone = phone;
+        this.address = address;
+        this.online = online;
     }
 
     /**
@@ -120,5 +136,21 @@ public class UserInform {
 
     public String toString() {
         return "UserInform{id = " + id + ", username = " + username + ", avatar = " + avatar + ", email = " + email + ", phone = " + phone + ", address = " + address + "}";
+    }
+
+    /**
+     * 获取
+     * @return online
+     */
+    public boolean isOnline() {
+        return online;
+    }
+
+    /**
+     * 设置
+     * @param online
+     */
+    public void setOnline(boolean online) {
+        this.online = online;
     }
 }

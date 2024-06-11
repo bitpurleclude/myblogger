@@ -13,6 +13,7 @@
         {{ friend.name }}
         <button @click="removeFriend(friend.id)">{{ friendsClickName }}</button>
         <slot name="friendButton" :friend="friend"></slot>
+        <span :class="onlineStatusClass(friend)">&#8226;</span> <!-- 这是一个小点 -->
       </li>
     </ul>
 
@@ -54,6 +55,9 @@ export default {
     }
   },
   computed: {
+    onlineStatusClass() {
+      return friend => friend.online ? 'online' : 'offline';
+    },
     sortedFriends() {
       return this.friends
           .filter(friend => friend && friend.name) // 过滤掉undefined的元素和name属性为undefined的元素
@@ -102,5 +106,12 @@ export default {
   border: 1px solid #000; /* 设置边框颜色和宽度 */
   padding: 10px; /* 设置内边距 */
   margin-bottom: 10px; /* 设置下方外边距 */
+}
+.online {
+  color: green;
+}
+
+.offline {
+  color: red;
 }
 </style>

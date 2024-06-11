@@ -1,6 +1,7 @@
 package com.purplecloud.useroperation.controller;
 
 import com.purplecloud.useroperation.bean.Relation;
+import com.purplecloud.useroperation.bean.RelationType;
 import com.purplecloud.useroperation.impl.RelationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -40,13 +41,24 @@ private RelationServiceImpl relationService;
         relation.setUserId(userId);
         return relationService.getRelation(relation);
     }
+    @RequestMapping("/getRequestRelation")
+    public List<Relation> getRequestRelation(@RequestParam int userId) {
+        Relation relation = new Relation();
+        relation.setRelationId(userId);
+        relation.setRelationType(RelationType.PRIVATE);
+        return relationService.getRelationFromRedis(relation);
+    }
     @RequestMapping("/unconfirmedTheRelationship")
     public void unconfirmedTheRelationship(@RequestBody Relation relation) {
         relationService.deleteRelationFormRedis(relation);
     }
     @RequestMapping("/confirmTheRelationship")
     public void confirmRelation(@RequestBody Relation relation) {
-        List<Relation> relationFromRedis = relationService.getRelationFromRedis(relation);
+        Relation relation2 = new Relation();
+        relation2.setUserId(relation.getRelationId());
+        relation2.setRelationId(relation.getUserId());
+        relation2.setRelationType(relation.getRelationType());
+        List<Relation> relationFromRedis = relationService.getRelationFromRedis(relation2);
         if (relationFromRedis.size() == 1) {
             Relation relation1 = new Relation();
             relation1.setUserId(relation.getRelationId());
@@ -54,6 +66,8 @@ private RelationServiceImpl relationService;
             relation1.setRelationType(relation.getRelationType());
             relationService.addRelation(relation1);
             relationService.addRelation(relation);
+            relationService.deleteRelationFormRedis(relation);
+            relationService.deleteRelationFormRedis(relation1);
         }else {
             throw new RuntimeException("Relation is not exist or more than one");
         }

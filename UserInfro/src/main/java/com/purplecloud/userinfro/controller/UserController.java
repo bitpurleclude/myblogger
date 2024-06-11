@@ -14,7 +14,13 @@ public class UserController {
     private UserService userService;
     @RequestMapping("/get-user-by-id")
     public UserInform getUserById(@RequestParam("id") int id) {
-        return userService.getUserById(id);
+        UserInform userById = userService.getUserById(id);
+        userById.setOnline(userService.isOnline(id));
+        return userById;
+    }
+    @RequestMapping("/hartBeat")
+    public void hartBeat(@RequestParam("id") int id) {
+        userService.hartBeat(id);
     }
     @RequestMapping("/insertUserInform")
     public void insertUserInform(@RequestParam("id") int id, @RequestParam("email") String email){

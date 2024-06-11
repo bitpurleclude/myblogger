@@ -1,16 +1,18 @@
 <template>
   <div class="chat-list">
-    <ChatItem
-        v-for="chat in sortedChats"
-        :key="chat.id"
-        :avatar="chat.avatar"
-        :name="chat.name"
-        :lastMessage="chat.lastMessage"
-        @mouseover="highlightChat(chat.id)"
-        @mouseleave="unhighlightChat(chat.id)"
-        @click="selectChat(chat.id)"
-        :class="{ 'highlight': chat.id === highlightedChatId }"
-    />
+    <div v-for="chat in sortedChats" :key="chat.id">
+      <ChatItem
+          :avatar="chat.avatar"
+          :name="chat.name"
+          :lastMessage="chat.lastMessage"
+          @mouseover="highlightChat(chat.id)"
+          @mouseleave="unhighlightChat(chat.id)"
+          @click="selectChat(chat.id)"
+          :class="{ 'highlight': chat.id === highlightedChatId }"
+      />
+      <button @click="downloadChat(chat)">下载聊天记录</button>
+      <button @click="deleteChat(chat.id)">删除聊天记录</button>
+    </div>
   </div>
 </template>
 
@@ -37,6 +39,47 @@ export default {
     this.sortChats();
   },
   methods: {
+    async deleteChat(chatId) {
+      // 打开数据库
+      var openRequest = indexedDB.open("my-db");
+
+      openRequest.onsuccess = function(e) {
+        var db = e.target.result;
+
+        // 打开对象存储并删除指定聊天的所有记录
+        var transaction = db.transaction("chats", "readwrite");
+        var objectStore = transaction.objectStore("chats");
+        var getRequest = objectStore.delete(chatId);
+
+        getRequest.onsuccess = function(e) {
+          console.log("Chat " + chatId + " deleted from IndexedDB.");
+        };
+      };
+    },
+    downloadChat(chat) {
+      // 将聊天对象转换为字符串
+      var dataString = JSON.stringify(chat);
+
+      // 创建 Blob 对象
+      var blob = new Blob([dataString], {type: "text/plain"});
+
+      // 创建 URL 对象
+      var url = URL.createObjectURL(blob);
+
+      // 创建隐藏的 <a> 元素并触发 click 事件
+      var a = document.createElement("a");
+      a.style.display = "none";
+      a.href = url;
+      a.download = "chat_" + chat.id + ".txt";
+      document.body.appendChild(a);
+      a.click();
+
+      // 清理
+      setTimeout(function() {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+      }, 0);
+    },
     sortChats() {
       this.sortedChats = this.chats.sort((a, b) => {
         if (a.pinned && !b.pinned) {

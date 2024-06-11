@@ -29,10 +29,10 @@ export default {
   },
   computed: {
     displayName() {
-      return this.user.isLoggedIn ? this.user.name : '游客';
+      return this.user.isLoggedIn ? localStorage.getItem('userInform').username : '游客'   ;
     },
     displayAvatar() {
-      return this.user.isLoggedIn ? this.user.avatar : '游客头像的URL';
+      return this.user.isLoggedIn ? localStorage.getItem('userInform').avatar : '游客头像的URL';
     }
   },
   methods: {

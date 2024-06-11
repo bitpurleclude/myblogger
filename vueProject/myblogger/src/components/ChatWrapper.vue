@@ -132,59 +132,59 @@ export default {
       this.firstChat = chats[0];
     } else {
       // 假设的数据
-      this.chats = [
-        // 示例数据，实际应用中应从服务器获取
-        {
-          id: 1,
-          avatar: 'avatar1.png',
-          name: 'User1',
-          type: 'PRIVATE',
-          lastMessage: 'Hello',
-          pinned: true,
-          lastChatTime: '2022-01-01T00:00:00Z',
-          messages: [
-            {
-              id: 1,
-              userid:1,
-              avatar: 'avatar1.png',
-              name: 'User1',
-              message: 'Hello',
-              isSelf: false},
-            {
-              id: 2,
-              userid:1,
-              avatar: 'avatar2.png',
-              name: 'User2',
-              message: 'Hi',
-              isSelf: true},
-          ]
-        },
-        {
-
-          id: 2,
-          avatar: 'avatar1.png',
-          name: 'User1',
-          lastMessage: 'Hello',
-          pinned: true,
-          lastChatTime: '2022-01-01T00:00:00Z',
-          messages: [
-            {
-              id: 1,
-              userid:1,
-              avatar: 'avatar1.png',
-              name: 'User1',
-              message: 'Hello',
-              isSelf: false},
-            {
-              id: 2,
-              userid:1,
-              avatar: 'avatar2.png',
-              name: 'User2',
-              message: 'Hi',
-              isSelf: true},
-          ]
-        },
-      ]
+      // this.chats = [
+      //   // 示例数据，实际应用中应从服务器获取
+      //   {
+      //     id: 1,
+      //     avatar: 'avatar1.png',
+      //     name: 'User1',
+      //     type: 'PRIVATE',
+      //     lastMessage: 'Hello',
+      //     pinned: true,
+      //     lastChatTime: '2022-01-01T00:00:00Z',
+      //     messages: [
+      //       {
+      //         id: 1,
+      //         userid:1,
+      //         avatar: 'avatar1.png',
+      //         name: 'User1',
+      //         message: 'Hello',
+      //         isSelf: false},
+      //       {
+      //         id: 2,
+      //         userid:1,
+      //         avatar: 'avatar2.png',
+      //         name: 'User2',
+      //         message: 'Hi',
+      //         isSelf: true},
+      //     ]
+      //   },
+      //   {
+      //
+      //     id: 2,
+      //     avatar: 'avatar1.png',
+      //     name: 'User1',
+      //     lastMessage: 'Hello',
+      //     pinned: true,
+      //     lastChatTime: '2022-01-01T00:00:00Z',
+      //     messages: [
+      //       {
+      //         id: 1,
+      //         userid:1,
+      //         avatar: 'avatar1.png',
+      //         name: 'User1',
+      //         message: 'Hello',
+      //         isSelf: false},
+      //       {
+      //         id: 2,
+      //         userid:1,
+      //         avatar: 'avatar2.png',
+      //         name: 'User2',
+      //         message: 'Hi',
+      //         isSelf: true},
+      //     ]
+      //   },
+      // ]
     }
   }
 }
